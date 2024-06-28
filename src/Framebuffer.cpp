@@ -101,6 +101,8 @@ namespace ge
         glClear(GL_COLOR_BUFFER_BIT);
 
         m_shader.use();
+        m_shader.setInt("u_screenWidth", ge::WINDOW_WIDTH);
+        m_shader.setInt("u_screenHeight", ge::WINDOW_HEIGHT);
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
 

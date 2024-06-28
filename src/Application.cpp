@@ -91,12 +91,13 @@ namespace ge
         m_window.clear(0.0f, 0.0f, 0.0f, 1.0f);
         glEnable(GL_DEPTH_TEST);
 
-
         if(m_skyboxActive)
         {
             m_skybox.use();
             m_skybox.Draw();
         }
+        
+
         m_shader.use();
         m_grassBlock.Draw(m_shader);
 
