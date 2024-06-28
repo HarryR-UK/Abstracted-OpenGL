@@ -90,6 +90,9 @@ namespace ge
         m_screenFrameBuffer.listenToRenderCalls();
         m_window.clear(0.0f, 0.0f, 0.0f, 1.0f);
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_STENCIL_TEST);
+
+        glStencilMask(0xFF);
 
         if(m_skyboxActive)
         {
