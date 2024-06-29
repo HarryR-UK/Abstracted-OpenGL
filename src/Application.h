@@ -40,9 +40,8 @@ namespace ge
 
             float m_previousTime = 0.0f;
 
-            std::vector<Model> m_models = {};
+            std::vector<Model> m_grassBlocks = {};
 
-            Model m_grassBlock;
 
             Shader m_shader;
 

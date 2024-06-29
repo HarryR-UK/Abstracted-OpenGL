@@ -27,6 +27,16 @@ void Model::Draw(Shader& shader)
         m_meshes[i].Draw(shader);
 }
 
+void Model::DrawPoints(Shader& shader)
+{
+    shader.use();
+    shader.setMat4("u_model", this->transform.getModelMatrix());
+    shader.setVec3("u_cameraPos", ge::Camera::position);
+    for (unsigned int i = 0; i < m_meshes.size(); i++)
+        m_meshes[i].DrawPoints(shader);
+
+}
+
 
 void Model::loadModel(std::string path)
 {

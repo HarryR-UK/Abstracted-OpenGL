@@ -39,7 +39,8 @@ namespace ge
             static inline float yaw = 90.0f;
             static inline float pitch = 0.0f;
 
-            static inline float moveSpeed = 1.0f;
+            static inline float moveSpeed = 5.0f;
+            static inline float sprintSpeed = 5.0f;
             static inline float mouseSens = 0.05f;
             static inline float fov = 65.0f;
             
@@ -55,7 +56,8 @@ namespace ge
                 LEFT,
                 RIGHT,
                 UP,
-                DOWN
+                DOWN,
+                SPRINT
             };
 
             
@@ -113,10 +115,12 @@ namespace ge
                 switch (direction)
                 {
                 case FORWARD:
-                    moveDir += forwards;
+                    moveDir.x += forwards.x;
+                    moveDir.z += forwards.z;
                     break;
                 case BACKWARD:
-                    moveDir -= forwards;
+                    moveDir.x -= forwards.x;
+                    moveDir.z -= forwards.z;
                     break;
                 case LEFT:
                     moveDir -= right;
@@ -125,11 +129,11 @@ namespace ge
                     moveDir += right;
                     break;
                 case UP:
-                    moveDir += up;
+                    moveDir += vec3(0.0f, 1.0f, 0.0f);
                     break;
                 case DOWN:
-                    moveDir -= up;
-                    break;
+                    moveDir -= vec3(0.0f, 1.0f, 0.0f);
+                    break; 
                 default:
                     break;
                 }

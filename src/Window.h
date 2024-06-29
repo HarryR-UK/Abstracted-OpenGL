@@ -68,6 +68,8 @@ namespace ge{
                     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
                 #endif //!__APPLE__
 
+                glfwSwapInterval(1);
+
 
                 m_window = (!fullscreen) ? glfwCreateWindow(w, h, title.c_str(), NULL, NULL) 
                 : glfwCreateWindow(w, h, title.c_str(), glfwGetPrimaryMonitor(), NULL);

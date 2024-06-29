@@ -42,7 +42,7 @@ class Model
         Model();
         void setup(char* path);
         void Draw(Shader& shader);
-
+        void DrawPoints(Shader& shader);
 
 };
 
