@@ -10,6 +10,7 @@
 #include "Camera.h"
 #include "DirectionalLight.h"
 #include "Framebuffer.h"
+#include "physics/Simulator.h"
 
 #include <glm/glm.hpp>
 #include <string>
@@ -25,7 +26,7 @@ namespace ge
             ge::Window m_window;
             ge::DirectionalLight m_directionalLight;
 
-            bool m_skyboxActive = true;
+            bool m_skyboxActive = false;
             
 
             std::vector<std::string> m_faces = 
@@ -40,10 +41,11 @@ namespace ge
 
             float m_previousTime = 0.0f;
 
-            std::vector<Model> m_grassBlocks = {};
 
 
             Shader m_shader;
+
+            ge::Simulator m_simulator;
 
             ge::Skybox m_skybox;
             ge::Framebuffer m_screenFrameBuffer;

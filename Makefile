@@ -1,4 +1,4 @@
-OBJS = ./src/*.cpp
+OBJS = ./src/*.cpp ./src/physics/*.cpp
 
 CC = g++ -std=c++20
 

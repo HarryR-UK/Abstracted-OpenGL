@@ -36,11 +36,10 @@ class Model
         std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type,std::string typeName);
         unsigned int textureFromFile(const char* path, const std::string& directory);
     public:
-        ge::Transform transform;
     public:
-        Model(char* path);
+        Model(const char* path);
         Model();
-        void setup(char* path);
+        void setup(const char* path);
         void Draw(Shader& shader);
         void DrawPoints(Shader& shader);
 

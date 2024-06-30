@@ -4,7 +4,7 @@
 #include "stb_image.h"
 
 
-Model::Model(char* path)
+Model::Model(const char* path)
 {
     //stbi_set_flip_vertically_on_load(true);
     loadModel(path);
@@ -13,7 +13,7 @@ Model::Model(char* path)
 Model::Model()
 {}
 
-void Model::setup(char* path)
+void Model::setup(const char* path)
 {
     loadModel(path);
 }
@@ -21,7 +21,6 @@ void Model::setup(char* path)
 void Model::Draw(Shader& shader)
 {
     shader.use();
-    shader.setMat4("u_model", this->transform.getModelMatrix());
     shader.setVec3("u_cameraPos", ge::Camera::position);
     for (unsigned int i = 0; i < m_meshes.size(); i++)
         m_meshes[i].Draw(shader);
@@ -30,7 +29,6 @@ void Model::Draw(Shader& shader)
 void Model::DrawPoints(Shader& shader)
 {
     shader.use();
-    shader.setMat4("u_model", this->transform.getModelMatrix());
     shader.setVec3("u_cameraPos", ge::Camera::position);
     for (unsigned int i = 0; i < m_meshes.size(); i++)
         m_meshes[i].DrawPoints(shader);

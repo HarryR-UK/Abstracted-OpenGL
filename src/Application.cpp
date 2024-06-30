@@ -11,6 +11,9 @@ namespace ge
         skyboxInit();
         lightsInit();
         framebuffersInit();
+        
+        m_simulator.setWindow(&m_window);
+        m_simulator.initialise();
     }
 
 
@@ -27,8 +30,6 @@ namespace ge
 
     void Application::modelsInit()
     {
-        Model grassBlock("./Resources/Models/MCCube/GrassBlock.obj");
-        m_grassBlocks.push_back(grassBlock);
     }
 
     void Application::skyboxInit()
@@ -65,6 +66,10 @@ namespace ge
         updateLights();
         updateModels();
 
+        m_simulator.update(ge::Time::deltaTime);
+
+
+
     }
 
     void Application::updateLights()
@@ -80,7 +85,7 @@ namespace ge
 
     void Application::updateModels()
     {
-
+        m_simulator.update(ge::Time::deltaTime);
         // m_grassBlock.transform.rotation.y = m_grassBlock.transform.rotation.y + (20 * ge::Time::deltaTime);
 
     }
@@ -103,11 +108,7 @@ namespace ge
         
 
         m_shader.use();
-        //m_grassBlock.Draw(m_shader);
-        for(int i = 0; i < m_grassBlocks.size(); ++i)
-        {
-            m_grassBlocks[i].Draw(m_shader);
-        }
+        m_simulator.render(m_shader);
 
 
         m_screenFrameBuffer.renderFramebufferToScreen();

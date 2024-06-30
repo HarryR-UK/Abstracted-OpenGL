@@ -39,7 +39,7 @@ namespace ge
             static inline float yaw = 90.0f;
             static inline float pitch = 0.0f;
 
-            static inline float moveSpeed = 5.0f;
+            static inline float moveSpeed = 7.0f;
             static inline float sprintSpeed = 5.0f;
             static inline float mouseSens = 0.05f;
             static inline float fov = 65.0f;
