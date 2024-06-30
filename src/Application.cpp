@@ -60,7 +60,7 @@ namespace ge
 
     void Application::update()
     {
-        m_window.processInput();
+        m_window.pollEvents();
         ge::Camera::updateCameraUBO();
         // model transformations
         updateLights();
@@ -94,7 +94,7 @@ namespace ge
     void Application::render()
     {
         m_screenFrameBuffer.listenToRenderCalls();
-        m_window.clear(0.0f, 0.0f, 0.0f, 1.0f);
+        m_window.clear(1.0f, 0.0f, 0.0f, 1.0f);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_STENCIL_TEST);
 
@@ -114,7 +114,6 @@ namespace ge
         m_screenFrameBuffer.renderFramebufferToScreen();
 
         m_window.display();
-        m_window.pollEvents();
 
     }
 
@@ -122,13 +121,15 @@ namespace ge
     {
         while(m_window.isOpen())
         {
+            ge::Time::currentFrameTime = SDL_GetTicks();
+            ge::Time::deltaTime = ge::Time::currentFrameTime - ge::Time::lastFrameTime;
             update();
 
             render();
 
-            ge::Time::update();
 
-            updateWindowFPS();
+            //updateWindowFPS();
+            ge::Time::lastFrameTime = ge::Time::currentFrameTime;
         }
     }
 

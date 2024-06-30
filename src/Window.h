@@ -1,9 +1,9 @@
 #ifndef WINDOW_H
 #define WINDOW_H
-
 #include <GL/glew.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
 #include <OpenGL/OpenGL.h>
-#include <GLFW/glfw3.h>
 #include <string>
 #include <iostream>
 
@@ -14,7 +14,8 @@ namespace ge{
     class Window
     {
         private:
-            GLFWwindow* m_window;
+            SDL_Window* m_window;
+            SDL_GLContext m_context;
             bool m_keyIsHeld = false;
 
         private:
@@ -26,6 +27,7 @@ namespace ge{
             }
 
         private:
+        /*
             static inline void mouseCallBack(GLFWwindow* window, double xPos, double yPos)
             {
                 float xOffset = xPos - s_mouseLastXPosition;
@@ -38,52 +40,42 @@ namespace ge{
                     ge::Camera::processMouseMovement(xOffset, yOffset);
             }
 
+            */
+
+
 
         public:
-
+            bool windowOpen = true;
         public:
             static inline float s_mouseLastXPosition = 0.0f;
             static inline float s_mouseLastYPosition = 0.0f;
 
 
+
         public:
 
-            GLFWwindow* getWindow() {return this->m_window;}
+            SDL_Window* getWindow() {return this->m_window;}
 
             void setupWindow(int w, int h, std::string title, int max, int min, bool fullscreen=false)
             {
-                if(!glfwInit())
-                {
-                    std::cout << "ERROR INIT GLFW" << '\n';
-                    std::exit(1);
-                }
-                
-                glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, max);
-                glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, min);
-                glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-                glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, false);
-                glfwWindowHint(GLFW_RESIZABLE, false);
-                glfwWindowHint(GLFW_SAMPLES, 4);
-                #if __APPLE__
-                    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-                #endif //!__APPLE__
+                SDL_Init(SDL_INIT_VIDEO);
 
-                glfwSwapInterval(1);
+                SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, max);
+                SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, min);
+                SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
+                m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, ge::WINDOW_WIDTH, ge::WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
 
-                m_window = (!fullscreen) ? glfwCreateWindow(w, h, title.c_str(), NULL, NULL) 
-                : glfwCreateWindow(w, h, title.c_str(), glfwGetPrimaryMonitor(), NULL);
+                m_context = SDL_GL_CreateContext(m_window);
 
-                glfwMakeContextCurrent(m_window);
-
-
-                glewExperimental = GL_TRUE;
+                glewExperimental = true;
 
                 if(glewInit() != GLEW_OK)
                 {
-                    std::cout << "ERROR INIT GLEW" << '\n';
-                    std::exit(1);
+                    std::cout << "ERROR: WITH GLEW" << '\n';
+                    exit(1);
                 }
+
 
                 glEnable(GL_DEPTH_TEST);
                 glEnable(GL_STENCIL_TEST);
@@ -98,16 +90,28 @@ namespace ge{
                 //glEnable(GL_MULTISAMPLE);
                 glEnable(GL_PROGRAM_POINT_SIZE);   
 
-                glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-                glfwSetCursorPosCallback(m_window, mouseCallBack);
+                SDL_ShowCursor(false);
+                //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                //glfwSetCursorPosCallback(m_window, mouseCallBack);
                 
             }
 
-            bool isOpen() {return !glfwWindowShouldClose(m_window);}
+            bool isOpen() {return windowOpen;}
 
-            void display() {glfwSwapBuffers(m_window);}
+            void display() {SDL_GL_SwapWindow(m_window);}
             
-            void pollEvents(){glfwPollEvents();}
+            void pollEvents()
+            {
+                SDL_Event event;
+                while(SDL_PollEvent(&event))
+                {
+                    if(event.type == SDL_QUIT)
+                        windowOpen = false;
+
+                    const Uint8* state = SDL_GetKeyboardState(NULL);
+                    processInput(state);
+                }
+            }
 
             void clear()
             {
@@ -121,41 +125,41 @@ namespace ge{
                 clearBuffers();
             }
 
-            void processInput()
+            void processInput(const Uint8* state)
             {
                 if(!s_isCursorVisible)
                 {
-                    if(glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
+                    if(state[SDL_SCANCODE_W])
                     {
                         ge::Camera::processKeyboardInput(ge::Camera::CameraMovementType::FORWARD, ge::Time::deltaTime);
                     }
-                    if(glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
+                    if(state[SDL_SCANCODE_S])
                     {
 
                         ge::Camera::processKeyboardInput(ge::Camera::CameraMovementType::BACKWARD, ge::Time::deltaTime);
                     }
-                    if(glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
+                    if(state[SDL_SCANCODE_A])
                     {
 
                         ge::Camera::processKeyboardInput(ge::Camera::CameraMovementType::LEFT, ge::Time::deltaTime);
                     }
-                    if(glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
+                    if(state[SDL_SCANCODE_D])
                     {
 
                         ge::Camera::processKeyboardInput(ge::Camera::CameraMovementType::RIGHT, ge::Time::deltaTime);
                     }
-                    if(glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS)
+                    if(state[SDL_SCANCODE_SPACE])
                     {
                         ge::Camera::processKeyboardInput(ge::Camera::CameraMovementType::UP, ge::Time::deltaTime);
                     }
-                    if(glfwGetKey(m_window, GLFW_KEY_C) == GLFW_PRESS || glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+                    if(state[SDL_SCANCODE_LCTRL])
                     {
                         ge::Camera::processKeyboardInput(ge::Camera::CameraMovementType::DOWN, ge::Time::deltaTime);
                     }
 
                 }
 
-                if(glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+                if(state[SDL_SCANCODE_ESCAPE])
                 {
                     if(!m_keyIsHeld)
                     {
@@ -164,12 +168,14 @@ namespace ge{
                         if(Window::s_isCursorVisible)
                         {
                             s_isCursorVisible = false;
-                            glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                            //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                            SDL_ShowCursor(false);
                         }
                         else
                         {
                             s_isCursorVisible = true;
-                            glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                            //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                            SDL_ShowCursor(true);
                         }
                     }
                 }
@@ -186,7 +192,8 @@ namespace ge{
 
             void setWindowTitle(std::string title)
             {
-                glfwSetWindowTitle(m_window, title.c_str());
+                //glfwSetWindowTitle(m_window, title.c_str());
+                SDL_SetWindowTitle(m_window, title.c_str());
             }
 
 

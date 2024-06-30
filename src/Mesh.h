@@ -1,7 +1,7 @@
 #ifndef MESH_H
 #define MESH_H
-
 #include <GL/glew.h>
+#include <OpenGL/OpenGL.h>
 #include <vector>
 
 #include "Shader.h"

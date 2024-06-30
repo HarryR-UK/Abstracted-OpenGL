@@ -1,8 +1,7 @@
 #ifndef FRAMEBUFFER_H
 #define FRAMEBUFFER_H
-
 #include <GL/glew.h>
-#include <glm/glm.hpp>
+#include <OpenGL/OpenGL.h>
 #include <iostream>
 
 #include "Shader.h"

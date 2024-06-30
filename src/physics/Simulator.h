@@ -1,6 +1,5 @@
 #ifndef SIMULATOR_H
 #define SIMULATOR_H
-
 #include <GL/glew.h>
 #include <OpenGL/OpenGL.h>
 #include <glm/glm.hpp>

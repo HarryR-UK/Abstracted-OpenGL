@@ -2,7 +2,6 @@
 #define SKYBOX_H
 
 #define LOG(x) std::cout << x << '\n'
-
 #include <GL/glew.h>
 #include <OpenGL/OpenGL.h>
 #include <glm/glm.hpp>
