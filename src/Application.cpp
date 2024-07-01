@@ -61,13 +61,14 @@ namespace ge
     void Application::update()
     {
         m_window.pollEvents();
+        m_window.processInput();
         ge::Camera::updateCameraUBO();
+        ge::Camera::getMouseMovement(m_window.getWindow());
         // model transformations
         updateLights();
         updateModels();
 
         m_simulator.update(ge::Time::deltaTime);
-
 
 
     }
@@ -94,7 +95,7 @@ namespace ge
     void Application::render()
     {
         m_screenFrameBuffer.listenToRenderCalls();
-        m_window.clear(1.0f, 0.0f, 0.0f, 1.0f);
+        m_window.clear(0.0f, 0.0f, 0.0f, 1.0f);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_STENCIL_TEST);
 

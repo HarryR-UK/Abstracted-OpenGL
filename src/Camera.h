@@ -3,6 +3,8 @@
 #include <GL/glew.h>
 #include <OpenGL/OpenGL.h>
 
+#include <SDL2/SDL.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -93,8 +95,10 @@ namespace ge
                 right = glm::normalize(glm::cross(forwards, vec3(0.0f, 1.0f, 0.0f)));
                 up = glm::normalize(glm::cross(right, forwards));
             }
+            
             static void processMouseMovement(float xOff, float yOff)
             {
+
                 xOff *= mouseSens;
                 yOff *= mouseSens;
 
@@ -107,6 +111,12 @@ namespace ge
                     pitch = -89.9f;
 
                 updateCameraVectors();
+            }
+
+            static void getMouseMovement(SDL_Window* window)
+            {
+        
+
             }
 
             static void processKeyboardInput(CameraMovementType direction, float deltaTime)

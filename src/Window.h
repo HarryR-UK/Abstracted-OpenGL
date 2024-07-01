@@ -17,9 +17,13 @@ namespace ge{
             SDL_Window* m_window;
             SDL_GLContext m_context;
             bool m_keyIsHeld = false;
+            SDL_Scancode m_keyPressed;
 
         private:
             static inline bool s_isCursorVisible = false;
+
+            bool KEYS[322];
+
         private:
             void clearBuffers()
             {
@@ -77,6 +81,7 @@ namespace ge{
                 }
 
 
+                SDL_SetRelativeMouseMode(SDL_TRUE);
                 glEnable(GL_DEPTH_TEST);
                 glEnable(GL_STENCIL_TEST);
                 glEnable(GL_CULL_FACE);
@@ -91,6 +96,12 @@ namespace ge{
                 glEnable(GL_PROGRAM_POINT_SIZE);   
 
                 SDL_ShowCursor(false);
+
+                for(int i = 0; i < 322; ++i)
+                {
+                    KEYS[i] = false;
+                }
+
                 //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
                 //glfwSetCursorPosCallback(m_window, mouseCallBack);
                 
@@ -108,8 +119,20 @@ namespace ge{
                     if(event.type == SDL_QUIT)
                         windowOpen = false;
 
-                    const Uint8* state = SDL_GetKeyboardState(NULL);
-                    processInput(state);
+                    if(event.type == SDL_MOUSEMOTION && !s_isCursorVisible)
+                    {
+                        ge::Camera::processMouseMovement(event.motion.xrel, -event.motion.yrel);
+                    }
+
+                    if(event.type == SDL_KEYDOWN)
+                    {
+
+                    }
+                    if(event.type = SDL_KEYUP)
+                    {
+
+                    }
+
                 }
             }
 
@@ -125,41 +148,14 @@ namespace ge{
                 clearBuffers();
             }
 
-            void processInput(const Uint8* state)
+            void processInput()
             {
                 if(!s_isCursorVisible)
                 {
-                    if(state[SDL_SCANCODE_W])
-                    {
-                        ge::Camera::processKeyboardInput(ge::Camera::CameraMovementType::FORWARD, ge::Time::deltaTime);
-                    }
-                    if(state[SDL_SCANCODE_S])
-                    {
-
-                        ge::Camera::processKeyboardInput(ge::Camera::CameraMovementType::BACKWARD, ge::Time::deltaTime);
-                    }
-                    if(state[SDL_SCANCODE_A])
-                    {
-
-                        ge::Camera::processKeyboardInput(ge::Camera::CameraMovementType::LEFT, ge::Time::deltaTime);
-                    }
-                    if(state[SDL_SCANCODE_D])
-                    {
-
-                        ge::Camera::processKeyboardInput(ge::Camera::CameraMovementType::RIGHT, ge::Time::deltaTime);
-                    }
-                    if(state[SDL_SCANCODE_SPACE])
-                    {
-                        ge::Camera::processKeyboardInput(ge::Camera::CameraMovementType::UP, ge::Time::deltaTime);
-                    }
-                    if(state[SDL_SCANCODE_LCTRL])
-                    {
-                        ge::Camera::processKeyboardInput(ge::Camera::CameraMovementType::DOWN, ge::Time::deltaTime);
-                    }
 
                 }
 
-                if(state[SDL_SCANCODE_ESCAPE])
+                if(m_keyPressed == SDL_SCANCODE_ESCAPE)
                 {
                     if(!m_keyIsHeld)
                     {
@@ -169,13 +165,15 @@ namespace ge{
                         {
                             s_isCursorVisible = false;
                             //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-                            SDL_ShowCursor(false);
+                            SDL_SetRelativeMouseMode(SDL_TRUE);
+                            SDL_ShowCursor(SDL_FALSE);
                         }
                         else
                         {
                             s_isCursorVisible = true;
                             //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-                            SDL_ShowCursor(true);
+                            SDL_SetRelativeMouseMode(SDL_FALSE);
+                            SDL_ShowCursor(SDL_TRUE);
                         }
                     }
                 }
