@@ -11,10 +11,10 @@ namespace ge
     void Simulator::initialise()
     {
         setupConstraint();
-        for(int i = 0; i < 1; ++i)
+        for(int i = 0; i < 10; ++i)
         {
             VerletObject obj;
-            obj.setup("./Resources/Models/Sphere/sphere.obj", 1, vec3(0));
+            obj.setup("./Resources/Models/Sphere/sphere.obj", 1, vec3(i, 0.0f, i));
             m_objects.push_back(obj);
         }
     }
@@ -26,6 +26,11 @@ namespace ge
         m_constraintObject.setup("./Resources/Models/Sphere/sphere.obj", m_constraintPosition);
         m_constraintObject.transform.scale = vec3(m_constraintRadius);
 
+    }
+
+    float Simulator::calculateDistance(vec3 axis)
+    {
+        return sqrt((axis.x * axis.x) + (axis.y * axis.y) + (axis.z * axis.z));
     }
 
     void Simulator::renderConstraint()
@@ -85,7 +90,26 @@ namespace ge
 
     void Simulator::checkCollisions()
     {
+        for(size_t i = 0; i < m_objects.size(); ++i)
+        {
+            VerletObject& obj1 = m_objects[i];
+            for(size_t j = i + 1; j < m_objects.size(); ++j)
+            {
+                VerletObject& obj2 = m_objects[j];
+                vec3 axis = obj1.transform.position - obj2.transform.position;
+                float distanceBtw = calculateDistance(axis);
+                float minDistance = obj1.radius + obj2.radius;
+                if(distanceBtw < minDistance)
+                {
+                    float moveAmount = minDistance - distanceBtw;
+                    float percentage = (moveAmount / distanceBtw) * 0.5f;
+                    vec3 offset = axis * percentage;
 
+                    obj1.transform.position += offset;
+                    obj2.transform.position -= offset;
+                }
+            }
+        }
     }
 
     void Simulator::checkConstraints()
@@ -93,7 +117,7 @@ namespace ge
         for(auto &obj : m_objects)
         {
             vec3 toObj = m_constraintPosition - obj.transform.position;
-            float distance = sqrt((obj.transform.position.x * obj.transform.position.x) + (obj.transform.position.y * obj.transform.position.y) + (obj.transform.position.z * obj.transform.position.z));
+            float distance = calculateDistance(toObj);
             if(distance > (m_constraintRadius - obj.radius))
             {
                 vec3 n = toObj / distance;

@@ -28,12 +28,12 @@ namespace ge
             float m_time;
             int m_subStepNumber;
 
-            vec3 m_gravity = vec3(0.0f, 10.f,0.0f);
+            vec3 m_gravity = vec3(0.0f, 9.8f,0.0f);
             
             std::vector<VerletObject> m_objects = {};
 
-            vec3 m_constraintPosition = vec3(0.2f, -0.5f, 0.0f);
-            float m_constraintRadius = 20.0f;
+            vec3 m_constraintPosition = vec3(0.f, -0.5f, 0.0f);
+            float m_constraintRadius = 30.0f;
 
         private:
             void updateObjects(float subDeltaTime);
@@ -41,6 +41,8 @@ namespace ge
             void checkCollisions();
             void checkConstraints();
             void setupConstraint();
+            float calculateDistance(vec3 axis);
+
 
         public:
 
