@@ -70,7 +70,6 @@ namespace ge
 
         m_simulator.update(ge::Time::deltaTime);
 
-
     }
 
     void Application::updateLights()
@@ -123,7 +122,7 @@ namespace ge
         while(m_window.isOpen())
         {
             ge::Time::currentFrameTime = SDL_GetTicks();
-            ge::Time::deltaTime = ge::Time::currentFrameTime - ge::Time::lastFrameTime;
+            ge::Time::deltaTime = (ge::Time::currentFrameTime - ge::Time::lastFrameTime) * 0.001;
             update();
 
             render();

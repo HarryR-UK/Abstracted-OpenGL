@@ -26,7 +26,7 @@ namespace ge
             ge::Window m_window;
             ge::DirectionalLight m_directionalLight;
 
-            bool m_skyboxActive = false;
+            bool m_skyboxActive = true;
             
 
             std::vector<std::string> m_faces = 

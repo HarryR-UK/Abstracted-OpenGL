@@ -133,6 +133,7 @@ namespace ge{
 
                     }
 
+
                 }
             }
 
@@ -152,6 +153,32 @@ namespace ge{
             {
                 if(!s_isCursorVisible)
                 {
+                    SDL_PumpEvents();
+                    const Uint8* state = SDL_GetKeyboardState(NULL);
+                    if(state[SDL_SCANCODE_W])
+                    {
+                        ge::Camera::processKeyboardInput(ge::Camera::FORWARD, ge::Time::deltaTime);
+                    }
+                    if(state[SDL_SCANCODE_S])
+                    {
+                        ge::Camera::processKeyboardInput(ge::Camera::BACKWARD, ge::Time::deltaTime);
+                    }
+                    if(state[SDL_SCANCODE_A])
+                    {
+                        ge::Camera::processKeyboardInput(ge::Camera::LEFT, ge::Time::deltaTime);
+                    }
+                    if(state[SDL_SCANCODE_D])
+                    {
+                        ge::Camera::processKeyboardInput(ge::Camera::RIGHT, ge::Time::deltaTime);
+                    }
+                    if(state[SDL_SCANCODE_SPACE])
+                    {
+                        ge::Camera::processKeyboardInput(ge::Camera::UP, ge::Time::deltaTime);
+                    }
+                    if(state[SDL_SCANCODE_LCTRL])
+                    {
+                        ge::Camera::processKeyboardInput(ge::Camera::DOWN, ge::Time::deltaTime);
+                    }
 
                 }
 
