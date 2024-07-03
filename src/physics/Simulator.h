@@ -28,20 +28,27 @@ namespace ge
             float m_time;
             int m_subStepNumber;
 
-            vec3 m_gravity = vec3(0.0f, 9.8f,0.0f);
+            int m_timeSpawner = 0;
+            int m_timeBetween = 0;
+            int m_spawnerDelay = 500;
+            int m_maxBalls = 100;
+            int m_currentBalls = 0;
+
+            vec3 m_gravity = vec3(0.0f, 10.f,0.0f);
             
             std::vector<VerletObject> m_objects = {};
 
-            vec3 m_constraintPosition = vec3(0.f, -0.5f, 0.0f);
             float m_constraintRadius = 30.0f;
 
         private:
             void updateObjects(float subDeltaTime);
             void updateGravity();
+            void updateConstraintMatrix();
             void checkCollisions();
-            void checkConstraints();
+            void checkConstraints(float subDT);
             void setupConstraint();
             float calculateDistance(vec3 axis);
+            void spawnObjects();
 
 
         public:

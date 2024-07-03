@@ -11,19 +11,14 @@ namespace ge
     void Simulator::initialise()
     {
         setupConstraint();
-        for(int i = 0; i < 10; ++i)
-        {
-            VerletObject obj;
-            obj.setup("./Resources/Models/Sphere/sphere.obj", 1, vec3(i, 0.0f, i));
-            m_objects.push_back(obj);
-        }
     }
 
     void Simulator::setupConstraint()
     {
         m_constraintShader.setShaderSrc("./Resources/Shaders/constraint.vert","./Resources/Shaders/constraint.frag");
         m_constraintShader.setUBOBinding("Camera", ge::CAMERA_UBO_INDEX);
-        m_constraintObject.setup("./Resources/Models/Sphere/sphere.obj", m_constraintPosition);
+        m_constraintObject.setup("./Resources/Models/Sphere/sphere.obj", vec3(0.0f));
+        m_constraintObject.transform.position = vec3(0.0f, 0.0f, 0.0f);
         m_constraintObject.transform.scale = vec3(m_constraintRadius);
 
     }
@@ -56,14 +51,29 @@ namespace ge
         {
             //std::cout << m_objects[0].transform.position.y << '\n';
             //m_objects[0].update(subDT);
+            spawnObjects();
+            updateConstraintMatrix();
             updateGravity();
-            updateObjects(subDT);
-            checkConstraints();
+            checkConstraints(subDT);
             checkCollisions();
+            updateObjects(subDT);
 
             //ge::Camera::position = m_objects[0].transform.position;
         }
 
+
+    }
+
+    void Simulator::spawnObjects()
+    {  
+        m_timeSpawner = SDL_GetTicks64();
+        if(m_timeSpawner - m_timeBetween > m_spawnerDelay && m_currentBalls < m_maxBalls + 1)
+        {
+            ge::VerletObject obj("./Resources/Models/Sphere/sphere.obj",(rand() % 3) + 1, vec3(0.0f + (rand() % 5), 0.0f,0.0f+ (rand() % 5)));
+            m_objects.push_back(obj);
+            m_timeBetween = m_timeSpawner;
+            m_currentBalls++;
+        }
 
     }
 
@@ -97,31 +107,38 @@ namespace ge
             {
                 VerletObject& obj2 = m_objects[j];
                 vec3 axis = obj1.transform.position - obj2.transform.position;
-                float distanceBtw = calculateDistance(axis);
-                float minDistance = obj1.radius + obj2.radius;
-                if(distanceBtw < minDistance)
+                float dist = sqrt((axis.x * axis.x) + (axis.y * axis.y) + (axis.z * axis.z));
+                if(dist < obj1.radius + obj2.radius)
                 {
-                    float moveAmount = minDistance - distanceBtw;
-                    float percentage = (moveAmount / distanceBtw) * 0.5f;
-                    vec3 offset = axis * percentage;
+                    vec3 norm = axis / dist;
 
-                    obj1.transform.position += offset;
-                    obj2.transform.position -= offset;
+                    float delta = obj1.radius + obj2.radius - dist;
+                    norm = norm * vec3((0.5 * delta));
+                     
+                    obj1.transform.position += norm;
+                    obj2.transform.position -= norm;
                 }
             }
         }
     }
 
-    void Simulator::checkConstraints()
+    void Simulator::updateConstraintMatrix()
+    {
+        m_constraintObject.transform.rotation.y += 0.3f * ge::Time::deltaTime;
+    }
+
+    void Simulator::checkConstraints(float subDT)
     {
         for(auto &obj : m_objects)
         {
-            vec3 toObj = m_constraintPosition - obj.transform.position;
-            float distance = calculateDistance(toObj);
-            if(distance > (m_constraintRadius - obj.radius))
+            vec3 disp = obj.transform.position - m_constraintObject.transform.position;
+            float dist = sqrt((disp.x * disp.x) + (disp.y * disp.y) + (disp.z * disp.z));
+            if(dist > (m_constraintRadius - obj.radius))
             {
-                vec3 n = toObj / distance;
-                obj.transform.position = m_constraintPosition - n * (m_constraintRadius - obj.radius);
+                vec3 norm = disp / dist;
+                norm = norm * (m_constraintRadius - obj.radius);
+                obj.transform.position = (m_constraintObject.transform.position + norm);
+                //obj.addVelocity(vec3(-obj.friction), subDT);
             }
         }
     }

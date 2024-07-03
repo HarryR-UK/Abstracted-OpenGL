@@ -16,5 +16,5 @@ uniform mat4 u_model;
 void main()
 {
     gl_Position = cam.projection * cam.view * u_model * vec4(aPos, 1.0);
-    gl_PointSize = (1 / gl_Position.z) * 100;
+    gl_PointSize = (1 / gl_Position.z) * 50;
 }

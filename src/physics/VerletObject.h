@@ -23,6 +23,7 @@ namespace ge
             ge::Transform transform;
             float radius = 1.0f;
             float mass;
+            float friction = 0.1f;
             glm::vec3 oldPosition;
             glm::vec3 acceleration;
         public:

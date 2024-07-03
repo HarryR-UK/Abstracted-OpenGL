@@ -151,10 +151,10 @@ namespace ge{
 
             void processInput()
             {
+                SDL_PumpEvents();
+                const Uint8* state = SDL_GetKeyboardState(NULL);
                 if(!s_isCursorVisible)
                 {
-                    SDL_PumpEvents();
-                    const Uint8* state = SDL_GetKeyboardState(NULL);
                     if(state[SDL_SCANCODE_W])
                     {
                         ge::Camera::processKeyboardInput(ge::Camera::FORWARD, ge::Time::deltaTime);
@@ -182,7 +182,7 @@ namespace ge{
 
                 }
 
-                if(m_keyPressed == SDL_SCANCODE_ESCAPE)
+                if(state[SDL_SCANCODE_ESCAPE])
                 {
                     if(!m_keyIsHeld)
                     {

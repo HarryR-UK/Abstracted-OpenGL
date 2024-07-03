@@ -13,7 +13,6 @@ namespace ge
         framebuffersInit();
         
         m_simulator.setWindow(&m_window);
-        m_simulator.initialise();
     }
 
 
@@ -69,7 +68,6 @@ namespace ge
         updateModels();
 
         m_simulator.update(ge::Time::deltaTime);
-
     }
 
     void Application::updateLights()
@@ -119,6 +117,7 @@ namespace ge
 
     void Application::run()
     {
+        m_simulator.initialise();
         while(m_window.isOpen())
         {
             ge::Time::currentFrameTime = SDL_GetTicks();

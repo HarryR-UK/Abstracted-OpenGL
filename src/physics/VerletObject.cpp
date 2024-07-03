@@ -16,9 +16,12 @@ namespace ge
     {
         this->model.setup(modelPath);
         transform.position = startPos;
+        this->radius = radius;
         oldPosition = transform.position;
         acceleration = vec3(0.0f);
         mass = radius * 0.5f;
+        transform.scale = vec3(radius);
+        friction *= (mass * 0.75f);
     }
 
     void VerletObject::update( float deltaTime )
@@ -26,7 +29,7 @@ namespace ge
         vec3 veclocity = transform.position - oldPosition;
         oldPosition = transform.position;
 
-        this->transform.position = this->transform.position + veclocity + (acceleration*mass) * (deltaTime * deltaTime);
+        this->transform.position = this->transform.position + veclocity + (acceleration) * (deltaTime * deltaTime);
 
         acceleration = vec3(0.0f, 0.0f, 0.0f);
     }
