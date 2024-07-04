@@ -9,6 +9,8 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
     setUpMesh();
 }
 
+
+
 void Mesh::setUpMesh()
 {
     glGenVertexArrays(1, &VAO);

@@ -67,6 +67,10 @@ namespace ge{
                 SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, max);
                 SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, min);
                 SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+                SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+                SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+
+                SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "4");
 
                 m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, ge::WINDOW_WIDTH, ge::WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
 
@@ -92,7 +96,7 @@ namespace ge{
                 
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-                //glEnable(GL_MULTISAMPLE);
+                glEnable(GL_MULTISAMPLE);
                 glEnable(GL_PROGRAM_POINT_SIZE);   
 
                 SDL_ShowCursor(false);
@@ -221,6 +225,11 @@ namespace ge{
                 SDL_SetWindowTitle(m_window, title.c_str());
             }
 
+            ~Window()
+            {
+                SDL_Quit();
+                SDL_DestroyWindow(this->m_window);
+            }
 
 
         

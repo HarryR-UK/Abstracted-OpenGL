@@ -13,6 +13,7 @@ struct Material
 {
     sampler2D texture_diffuse1;
     sampler2D texture_specular1;
+    vec3 diffuse;
     float shininess;
 };
 
@@ -44,8 +45,8 @@ vec3 calcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 
     float spec = pow(max(dot(normal, halfwayDir), 0.0), material.shininess);
 
-    vec3 diffuse = light.diffuse * diff * texture(material.texture_diffuse1, fs_in.texCoords).rgb;
-    vec3 ambient = light.ambient * texture(material.texture_diffuse1, fs_in.texCoords).rgb;
+    vec3 diffuse = light.diffuse * diff * material.diffuse;// * texture(material.texture_diffuse1, fs_in.texCoords).rgb;
+    vec3 ambient = light.ambient * material.diffuse;//texture(material.texture_diffuse1, fs_in.texCoords).rgb;
     vec3 specular = light.specular * spec * texture(material.texture_specular1, fs_in.texCoords).rgb;
 
     return (ambient + diffuse + specular);

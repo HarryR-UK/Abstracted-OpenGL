@@ -26,6 +26,7 @@ namespace ge
             float friction = 0.1f;
             glm::vec3 oldPosition;
             glm::vec3 acceleration;
+            glm::vec3 color = glm::vec3(1.0f);
         public:
             VerletObject(const char* modelPath, float radius, vec3 startPos);
             VerletObject();

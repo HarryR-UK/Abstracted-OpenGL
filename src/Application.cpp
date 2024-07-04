@@ -120,6 +120,7 @@ namespace ge
         m_simulator.initialise();
         while(m_window.isOpen())
         {
+            ge::Time::time = SDL_GetTicks();
             ge::Time::currentFrameTime = SDL_GetTicks();
             ge::Time::deltaTime = (ge::Time::currentFrameTime - ge::Time::lastFrameTime) * 0.001;
             update();

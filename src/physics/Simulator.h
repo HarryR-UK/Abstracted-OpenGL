@@ -30,11 +30,11 @@ namespace ge
 
             int m_timeSpawner = 0;
             int m_timeBetween = 0;
-            int m_spawnerDelay = 500;
-            int m_maxBalls = 100;
+            int m_spawnerDelay = 100;
+            int m_maxBalls = 300;
             int m_currentBalls = 0;
 
-            vec3 m_gravity = vec3(0.0f, 10.f,0.0f);
+            vec3 m_gravity = vec3(0.0f, 20.f,0.0f);
             
             std::vector<VerletObject> m_objects = {};
 
