@@ -70,14 +70,15 @@ namespace ge
         m_timeSpawner = SDL_GetTicks64();
         if(m_timeSpawner - m_timeBetween > m_spawnerDelay && m_currentBalls < m_maxBalls)
         {
-            ge::VerletObject obj("./Resources/Models/Sphere/sphere.obj",(rand() % 2) + 0.5, vec3(0.0f + (rand() % 5), 0.0f,0.0f+ (rand() % 5)));
+            ge::VerletObject obj("./Resources/Models/Sphere/sphere.obj",(rand() % 3) + 1.f, vec3(0.0f + (rand() % 5), 0.0f,0.0f+ (rand() % 5)));
             float randomColorX = sin(ge::Time::time);
             randomColorX *= randomColorX;
             float randomColorY = sin(ge::Time::time + 0.3f * 2);
             randomColorY *= randomColorY;
             float randomColorZ = sin(ge::Time::time + 0.6f * 2);
             randomColorZ *= randomColorZ;
-            obj.color = vec3(randomColorX, randomColorY, randomColorZ);
+            obj.material.diffuse = vec3(randomColorX, randomColorY, randomColorZ);
+            obj.material.shininess = 1.0f;
             m_objects.push_back(obj);
             m_timeBetween = m_timeSpawner;
             m_currentBalls++;

@@ -53,7 +53,8 @@ namespace ge
     {
         shader.use();
         shader.setMat4("u_model", transform.getModelMatrix());
-        shader.setVec3("material.diffuse", this->color);
+        shader.setVec3("material.diffuse", this->material.diffuse);
+        shader.setFloat("material.shininess", this->material.shininess);
         model.Draw(shader);
     }
 
