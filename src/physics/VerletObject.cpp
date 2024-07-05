@@ -28,6 +28,8 @@ namespace ge
     {
         vec3 veclocity = transform.position - oldPosition;
         oldPosition = transform.position;
+        if(isCollided)
+            acceleration *= friction;
 
         this->transform.position = this->transform.position + veclocity + (acceleration) * (deltaTime * deltaTime);
 

@@ -78,7 +78,7 @@ namespace ge
             float randomColorZ = sin(ge::Time::time + 0.6f * 2);
             randomColorZ *= randomColorZ;
             obj.material.diffuse = vec3(randomColorX, randomColorY, randomColorZ);
-            obj.material.shininess = 1.0f;
+            obj.material.shininess = (rand() % 500) + 1.f;
             m_objects.push_back(obj);
             m_timeBetween = m_timeSpawner;
             m_currentBalls++;
@@ -128,6 +128,7 @@ namespace ge
                      
                     obj1.transform.position += norm;
                     obj2.transform.position -= norm;
+
                 }
             }
         }
