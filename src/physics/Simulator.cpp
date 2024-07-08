@@ -55,7 +55,7 @@ namespace ge
             updateConstraintMatrix();
             updateGravity();
             checkConstraints(subDT);
-            checkCollisions();
+            //checkCollisions();
             updateObjects(subDT);
 
             //ge::Camera::position = m_objects[0].transform.position;
@@ -66,6 +66,7 @@ namespace ge
 
     void Simulator::startThreads()
     {
+
     }
 
     void Simulator::spawnObjects()
