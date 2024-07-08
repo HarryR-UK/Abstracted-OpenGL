@@ -51,7 +51,8 @@ namespace ge
             void checkConstraints(float subDT);
             void setupConstraint();
             float calculateDistance(vec3 axis);
-            void spawnObjects();
+            void spawnObjects(float subDT);
+
 
 
         public:

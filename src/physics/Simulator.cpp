@@ -51,11 +51,11 @@ namespace ge
         {
             //std::cout << m_objects[0].transform.position.y << '\n';
             //m_objects[0].update(subDT);
-            spawnObjects();
+            spawnObjects(subDT);
             updateConstraintMatrix();
             updateGravity();
             checkConstraints(subDT);
-            //checkCollisions();
+            checkCollisions();
             updateObjects(subDT);
 
             //ge::Camera::position = m_objects[0].transform.position;
@@ -65,7 +65,7 @@ namespace ge
     }
 
 
-    void Simulator::spawnObjects()
+    void Simulator::spawnObjects(float subDT)
     {  
         std::cout << "CURRENT BALLS: " << m_currentBalls << '\n';
         m_timeSpawner = SDL_GetTicks64();
@@ -73,6 +73,7 @@ namespace ge
         {
             ge::VerletObject obj("./Resources/Models/Sphere/sphere.obj",2, vec3(0.0f + (rand() % 5), 0.0f,0.0f+ (rand() % 5)));
             obj.accelerate(vec3(0.0f, -100.0f, 0.0f));
+            obj.addVelocity(vec3(0.0f, -1000.0f, 0.0f), subDT);
             float randomColorX = sin(ge::Time::time);
             randomColorX *= randomColorX;
             float randomColorY = sin(ge::Time::time + 0.3f * 2);
