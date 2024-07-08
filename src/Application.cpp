@@ -118,6 +118,7 @@ namespace ge
     void Application::run()
     {
         m_simulator.initialise();
+        m_simulator.startThreads();
         while(m_window.isOpen())
         {
             ge::Time::time = SDL_GetTicks();

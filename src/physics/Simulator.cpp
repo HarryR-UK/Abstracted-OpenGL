@@ -64,13 +64,18 @@ namespace ge
 
     }
 
+    void Simulator::startThreads()
+    {
+    }
+
     void Simulator::spawnObjects()
     {  
         std::cout << "CURRENT BALLS: " << m_currentBalls << '\n';
         m_timeSpawner = SDL_GetTicks64();
         if(m_timeSpawner - m_timeBetween > m_spawnerDelay && m_currentBalls < m_maxBalls)
         {
-            ge::VerletObject obj("./Resources/Models/Sphere/sphere.obj",(rand() % 3) + 1.f, vec3(0.0f + (rand() % 5), 0.0f,0.0f+ (rand() % 5)));
+            ge::VerletObject obj("./Resources/Models/Sphere/sphere.obj",2, vec3(0.0f + (rand() % 5), 0.0f,0.0f+ (rand() % 5)));
+            obj.accelerate(vec3(0.0f, -100.0f, 0.0f));
             float randomColorX = sin(ge::Time::time);
             randomColorX *= randomColorX;
             float randomColorY = sin(ge::Time::time + 0.3f * 2);

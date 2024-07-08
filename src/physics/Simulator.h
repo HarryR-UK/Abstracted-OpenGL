@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <iostream>
+#include <thread>
 
 #include "../Shader.h"
 #include "VerletObject.h"
@@ -40,6 +41,8 @@ namespace ge
 
             float m_constraintRadius = 30.0f;
 
+
+
         private:
             void updateObjects(float subDeltaTime);
             void updateGravity();
@@ -61,6 +64,7 @@ namespace ge
             void update( float deltaTime );
             float getSubDeltaTime();
             void setWindow(ge::Window* window);
+            void startThreads();
     };
 } // namespace ge
 

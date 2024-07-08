@@ -23,6 +23,7 @@ namespace ge
             GLuint renderBufferID;
 
             GLuint VAO, VBO, EBO;
+            
 
 
         public:

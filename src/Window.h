@@ -68,9 +68,9 @@ namespace ge{
                 SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, min);
                 SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
                 SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-                SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+                SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 64);
 
-                SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "4");
+                SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "64");
 
                 m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, ge::WINDOW_WIDTH, ge::WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
 

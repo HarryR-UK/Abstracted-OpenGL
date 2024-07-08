@@ -25,7 +25,7 @@ void main()
     float kernel[9] = float[]
     (
         1, 1, 1,
-        1, -8, 1,
+        1, -7, 1,
         1, 1, 1
     );
 
@@ -37,6 +37,10 @@ void main()
     }
 
     //FragColor = vec4(color, 1.0);
-    FragColor = vec4(texture(screenTexture, texCoords).rgb, 1.0);
+
+
+    vec3 fragC = vec3(texture(screenTexture, texCoords).rgb);
+
+    FragColor = vec4(fragC, 1.0);
 
 }
