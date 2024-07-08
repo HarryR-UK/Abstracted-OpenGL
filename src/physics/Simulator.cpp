@@ -64,10 +64,6 @@ namespace ge
 
     }
 
-    void Simulator::startThreads()
-    {
-
-    }
 
     void Simulator::spawnObjects()
     {  
